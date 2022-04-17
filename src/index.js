@@ -4,13 +4,14 @@ import { awaitTimeout, writeInFile } from './utils/utils.js';
 
 const listStreamer = async (page) => {
   // All streamer Partner.
-  // const url =`https://streamerbans.com/streamers?page=${page}&banStatus=all`
+  const url = `https://streamerbans.com/_next/data/myggjAYSG9zXDPknsBJ_N/streamers.json?page=${page}&banStatus=all`;
 
   // All streamers that are not currently banned.
-  const url = `https://streamerbans.com/_next/data/myggjAYSG9zXDPknsBJ_N/streamers.json?page=${page}&banStatus=unbanned`;
+  // const url = `https://streamerbans.com/_next/data/myggjAYSG9zXDPknsBJ_N/streamers.json?page=${page}&banStatus=unbanned`;
 
   // All streamers that are currently banned.
-  // const url = `https://streamerbans.com/streamers?page=${page}&banStatus=banned`
+  // const url = `https://streamerbans.com/_next/data/myggjAYSG9zXDPknsBJ_N/streamers.json?page=${page}&banStatus=banned`;
+
   try {
     const result = await axios(url, {
       headers: {
@@ -26,7 +27,7 @@ const listStreamer = async (page) => {
 };
 
 async function start () {
-  let c = 0;
+  let c = 1;
 
   if (!fileSystem.existsSync('./Data')) { fileSystem.mkdirSync('./Data', { recursive: true }); }
   writeInFile(`\n\n${new Date().toISOString()}\nID || USERNAME || FOLLOWERS || BANNED\n`);
@@ -34,13 +35,11 @@ async function start () {
   const streamerBansData = (await listStreamer('1')).pageProps;
   const totalPage = streamerBansData.totalPages;
 
-  for (let i = 0; i < totalPage; i++) {
-    if (i !== 0) {
-      const listOfStreamer = (await listStreamer(i)).pageProps.users;
-      listOfStreamer.forEach((tw) => {
-        writeInFile(`Page: ${i}/${totalPage} | Streamer: ${c++}/${streamerBansData.totalUsers} || ${tw.channel_id} ${tw.login_name} ${tw.followers} ${tw.is_banned}`);
-      });
-    }
+  for (let i = 1; i < totalPage + 1; i++) {
+    const listOfStreamer = (await listStreamer(i)).pageProps.users;
+    listOfStreamer.forEach((tw) => {
+      writeInFile(`Page: ${i}/${totalPage} | Streamer: ${c++}/${streamerBansData.totalUsers} || ${tw.channel_id} ${tw.login_name} ${tw.followers} ${tw.is_banned}`);
+    });
   }
 
   // Timer add to avoid missing the last page.
