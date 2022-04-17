@@ -3,7 +3,7 @@ import axios from 'axios';
 import { awaitTimeout, writeInFile } from './utils/utils.js';
 
 const listStreamer = async (page) => {
-  // All streamer Parnter
+  // All streamer Partner
   // const url =`https://streamerbans.com/streamers?page=${page}&banStatus=all`
 
   // All streamers that are not currently banned
