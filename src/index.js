@@ -3,13 +3,13 @@ import axios from 'axios';
 import { awaitTimeout, writeInFile } from './utils/utils.js';
 
 const listStreamer = async (page) => {
-  // All streamer Partner
+  // All streamer Partner.
   // const url =`https://streamerbans.com/streamers?page=${page}&banStatus=all`
 
-  // All streamers that are not currently banned
+  // All streamers that are not currently banned.
   const url = `https://streamerbans.com/_next/data/myggjAYSG9zXDPknsBJ_N/streamers.json?page=${page}&banStatus=unbanned`;
 
-  // All streamers that are currently banned
+  // All streamers that are currently banned.
   // const url = `https://streamerbans.com/streamers?page=${page}&banStatus=banned`
   try {
     const result = await axios(url, {
@@ -43,7 +43,7 @@ async function start () {
     }
   }
 
-  // Timer add to avoid missing the last page
+  // Timer add to avoid missing the last page.
   await awaitTimeout(10000).then();
   console.log(`Done. Streamers: ${streamerBansData.totalUsers}`);
 };
